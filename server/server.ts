@@ -1,5 +1,10 @@
 import bodyParser, { json } from "body-parser";
-import { addFavoriteShoeToUser, getAllShoes } from "./dbFunctions";
+import {
+  addFavoriteShoeToUser,
+  getAllShoes,
+  getFavoriteShoes,
+  getOneShoe,
+} from "./dbFunctions";
 import cors from "cors";
 
 const express = require("express");
@@ -22,14 +27,25 @@ app.get("/shoes", async (req, res) => {
   res.json(shoes);
 });
 
-app.get("/shoes/:id", (req, res) => {
-  // send details for one shoe
-  res.send("One shoe");
-});
-
 app.post("/shoes", (req, res) => {
   // post a new shoe to list
   res.send("new shoe created");
+});
+
+app.get("/shoes/:id", async (req, res) => {
+  const shoeId = req.params.id;
+  console.log(shoeId);
+  const shoe = await getOneShoe(shoeId);
+  console.log(shoe);
+  // send details for one shoe
+  res.json(shoe);
+});
+
+app.post("/favorites", async (req, res) => {
+  const userId = req.body.id;
+  const shoes = await getFavoriteShoes(userId);
+  // send details for all favorite shoes
+  res.json(shoes);
 });
 
 app.post("/shoes/:id", (req, res) => {
@@ -37,8 +53,11 @@ app.post("/shoes/:id", (req, res) => {
   res.send("updated shoe");
 });
 
-app.get("/favorite/shoe", (req, res) => {
-  // addFavoriteShoeToUser
+app.post("/favorite/user/shoe", async (req, res) => {
+  const userId = req.body.userId;
+  const shoeId = req.body.shoeId;
+
+  await addFavoriteShoeToUser(userId, shoeId);
   // Add shoe as a favorite for the user
   res.send("favorited shoe");
 });
