@@ -3,6 +3,9 @@ import Header from "./Header"
 import { defaultTestUser } from "../main";
 import { Link } from "react-router-dom";
 
+
+
+
 function Favorites() {
 
     const [favorites, setFavorites] = useState<any[]>([])
@@ -16,16 +19,12 @@ function Favorites() {
             },
             body: JSON.stringify({ id: defaultTestUser.id }),
         }).then(res => res.json()).then((data) => {
-            console.log('boop')
-            console.log(data)
             setFavorites(data)
         }).catch((error) => {
             console.log('error')
             const errorCode = error.code;
             const errorMessage = error.message;
         });
-
-
     }, [])
 
     // get current users list of favorites

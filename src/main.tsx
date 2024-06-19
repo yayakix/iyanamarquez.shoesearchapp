@@ -6,7 +6,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Products from './components/Products.tsx';
 import Item from './components/Item.tsx';
 import Favorites from './components/Favorites.tsx';
 
@@ -16,6 +15,7 @@ export const defaultTestUser = {
   name: 'Alice',
   avatar_url: 'link.com'
 }
+
 
 const router = createBrowserRouter([
   {

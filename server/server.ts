@@ -4,6 +4,7 @@ import {
   getAllShoes,
   getFavoriteShoes,
   getOneShoe,
+  removeFavoriteShoeFromUser,
 } from "./dbFunctions";
 import cors from "cors";
 
@@ -60,6 +61,15 @@ app.post("/favorite/user/shoe", async (req, res) => {
   await addFavoriteShoeToUser(userId, shoeId);
   // Add shoe as a favorite for the user
   res.send("favorited shoe");
+});
+
+app.post("/remove/favorite/user/shoe", async (req, res) => {
+  const userId = req.body.userId;
+  const shoeId = req.body.shoeId;
+
+  await removeFavoriteShoeFromUser(userId, shoeId);
+  // Add shoe as a favorite for the user
+  res.send("removed shoe from favorites");
 });
 
 app.get("/user/:id", (req, res) => {
