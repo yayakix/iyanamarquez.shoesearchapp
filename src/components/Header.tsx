@@ -3,9 +3,9 @@ function Header() {
     const list = [{
         title: 'Home'
     }, {
-        title: 'Features'
+        title: 'Favorites'
     }, {
-        title: 'Pricing'
+        title: 'Contact'
     }]
 
 
