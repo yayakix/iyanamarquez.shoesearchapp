@@ -43,3 +43,26 @@ export const addFavoriteShoeToUser = async (userId: string, shoeId: string) => {
     },
   });
 };
+
+export const removeFavoriteShoeFromUser = async (
+  userId: string,
+  shoeId: string
+) => {
+  // Create a user and shoe relationship
+  const relationship = await prisma.usersToShoesFavorites.findFirst({
+    where: {
+      user: {
+        id: userId,
+      },
+      shoe: {
+        id: shoeId,
+      },
+    },
+  });
+  const relationshipId = relationship?.id;
+  await prisma.usersToShoesFavorites.delete({
+    where: {
+      id: relationshipId,
+    },
+  });
+};

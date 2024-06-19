@@ -7,7 +7,7 @@ function Item() {
 
     const { id } = useParams();
     console.log(id)
-    const [item, setItem] = useState<any[]>([])
+    const [item, setItem] = useState<any>('')
     const url = 'http://localhost:4000'
     // Get all products
     useEffect(() => {
@@ -17,29 +17,21 @@ function Item() {
                 "Content-Type": "application/json",
             }
         }).then(res => res.json()).then((data) => {
-            console.log('boop')
-            console.log(data)
             setItem(data)
         }).catch((error) => {
-            console.log('error')
+            console.log('error', error.message)
         });
     }, [])
-
 
     // fetch single item
     return (
         <>
             <Header />
-
             <div className="w-full flex flex-col items-center justify-center mt-16">
                 there should be one item here
                 <ItemCard name={item.name} url={item.url} price={item.price} description={item.description} />
 
             </div>
-
-
-
-
         </>
     )
 }

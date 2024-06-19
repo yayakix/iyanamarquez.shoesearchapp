@@ -26,15 +26,29 @@ export function ItemCard({ name, url, description, price }: ItemProps) {
             },
             body: JSON.stringify(data),
         }).then(res => res.json()).then((data) => {
-            console.log('boop')
-            console.log('hello', data)
         }).catch((error) => {
             console.log('error')
             const errorCode = error.code;
             const errorMessage = error.message;
         });
+    }
 
-
+    const removeFromFavorites = () => {
+        const data = {
+            userId: userId,
+            shoeId: shoeId
+        }
+        fetch(`http://localhost:4000/remove/favorite/user/shoe`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }).then(res => res.json()).then((data) => { }).catch((error) => {
+            console.log('error')
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        });
     }
     return (
         <>
@@ -60,11 +74,18 @@ export function ItemCard({ name, url, description, price }: ItemProps) {
                 </div>
                 <div className="p-6 pt-0">
                     <button
-                        className="block w-full select-none rounded-lg bg-blue-gray-900/10 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-blue-gray-900 transition-all hover:scale-105 focus:scale-103 focus:opacity-[0.65] active:scale-100 active:opacity-[0.65] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        className="mb-4 block w-full select-none rounded-lg bg-blue-gray-900/10 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-blue-gray-900 transition-all hover:scale-105 focus:scale-103 focus:opacity-[0.65] active:scale-100 active:opacity-[0.65] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                         type="button"
                         onClick={addToFavorites}
                     >
                         Add to favorites
+                    </button>
+                    <button
+                        className="block w-full select-none rounded-lg bg-blue-gray-900/10 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-blue-gray-900 transition-all hover:scale-105 focus:scale-103 focus:opacity-[0.65] active:scale-100 active:opacity-[0.65] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button"
+                        onClick={removeFromFavorites}
+                    >
+                        Remove from favorites
                     </button>
                 </div>
             </div>

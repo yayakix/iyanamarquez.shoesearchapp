@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import * as dotenv from 'dotenv';
-// dotenv.config();
-
-
 export default function Products() {
     const [products, setProducts] = useState<any[]>([])
     const url = 'http://localhost:4000'
