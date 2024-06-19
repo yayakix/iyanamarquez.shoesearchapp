@@ -18,9 +18,25 @@ export const getAllShoes = async () => {
   return await prisma.shoe.findMany();
 };
 
+// Get all of a users favorite shoes
+export const getFavoriteShoes = async (userId: string) => {
+  return await prisma.shoe.findMany({
+    where: {
+      favoritedBy: {
+        some: { userId: userId },
+      },
+    },
+  });
+};
+export const getOneShoe = async (shoeId: string) => {
+  return await prisma.shoe.findFirst({
+    where: { id: shoeId },
+  });
+};
+
 export const addFavoriteShoeToUser = async (userId: string, shoeId: string) => {
   // Create a user and shoe relationship
-  prisma.usersToShoesFavorites.create({
+  await prisma.usersToShoesFavorites.create({
     data: {
       userId: userId,
       shoeId: shoeId,

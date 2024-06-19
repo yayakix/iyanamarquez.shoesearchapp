@@ -8,7 +8,14 @@ import {
 } from "react-router-dom";
 import Products from './components/Products.tsx';
 import Item from './components/Item.tsx';
+import Favorites from './components/Favorites.tsx';
 
+export const defaultTestUser = {
+  id: 'clxm4hnxg0000127n543sm1js',
+  email: 'alice@prisma.io',
+  name: 'Alice',
+  avatar_url: 'link.com'
+}
 
 const router = createBrowserRouter([
   {
@@ -18,15 +25,13 @@ const router = createBrowserRouter([
   {
     path: "/products",
     element: <App />,
-    // children: [
-    //   {
-    //     path: "/products/:productId",
-    //     element: <Item />,
-    //   },
-    // ],
   },
   {
-    path: "/products/:productId",
+    path: "/favorites",
+    element: <Favorites />,
+  },
+  {
+    path: "/products/:id",
     element: <Item />,
   },
 

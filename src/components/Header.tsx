@@ -1,4 +1,3 @@
-import { it } from "node:test"
 import { Link } from "react-router-dom"
 function Header() {
     const list = [{
@@ -6,7 +5,7 @@ function Header() {
         link: '/'
     }, {
         title: 'Favorites',
-        link: '/products'
+        link: '/favorites'
     }, {
         title: 'Contact',
         link: '/'
@@ -98,13 +97,16 @@ function Header() {
                             <div className="px-6 text-center text-white md:px-12">
                                 <h1 className="mb-6 text-5xl font-bold">Funky Shoes</h1>
                                 <h3 className="mb-8 text-3xl font-bold">For funky feet</h3>
-                                <button
-                                    type="button"
-                                    className="inline-block rounded border-2 border-neutral-50 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:text-neutral-200 focus:outline-none focus:ring-0 active:border-neutral-300 active:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600"
-                                    data-twe-ripple-init
-                                    data-twe-ripple-color="light">
-                                    Find shoes
-                                </button>
+                                <Link to='/'>
+                                    <button
+                                        type="button"
+                                        className="inline-block rounded border-2 border-neutral-50 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:text-neutral-200 focus:outline-none focus:ring-0 active:border-neutral-300 active:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600"
+                                        data-twe-ripple-init
+                                        data-twe-ripple-color="light">
+                                        Find shoes
+                                    </button>
+                                </Link>
+
                             </div>
                         </div>
                     </div>
