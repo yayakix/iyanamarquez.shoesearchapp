@@ -1,5 +1,5 @@
 import Header from "./Header"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const initialValues = {
@@ -7,6 +7,23 @@ const initialValues = {
 };
 
 function CreateTag() {
+
+    const [tags, setTags] = useState<any>([])
+    const url = 'http://localhost:4000'
+    // Get all products
+    useEffect(() => {
+        fetch(`${url}/tags/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(res => res.json()).then((data) => {
+            setTags(data)
+        }).catch((error) => {
+        });
+    }, [])
+
+
     // FETCH TO POST NEW CARD
     const navigate = useNavigate();
 
@@ -30,7 +47,7 @@ function CreateTag() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ shoe: values }),
+            body: JSON.stringify({ name: values }),
         })
 
     }
@@ -38,24 +55,31 @@ function CreateTag() {
     return (
         <>
             <Header />
-            <div className="flex flex-col w-full">
+            <h1 className="text-center mt-10 text-3xl w-full mb-10">Create New Tag</h1>
 
-                <h1 className="self-center mt-10 text-3xl">Create New Tag</h1>
-                <div className="p-32">
+            <div className="flex justify-center">
+                <div className="flex flex-col">
+                    <div className="">
 
-                    <div className="grid gap-6 mb-6 md:grid-cols-2">
-                        {/* form to submit data */}
-                        <div>
-                            <label className={labelClass}>Tag Name</label>
-                            <input className={inputClass} type="text" name="name" onChange={handleInputChange} value={values.name}></input>
+                        <div className="grid gap-6 mb-6 md:grid-cols-2">
+                            {/* form to submit data */}
+                            <div>
+                                <label className={labelClass}>Tag Name</label>
+                                <input className={inputClass} type="text" name="name" onChange={handleInputChange} value={values.name}></input>
+                            </div>
+
                         </div>
+                        <button className={btnClass} type="submit" onClick={() => {
+                            handleSubmit()
+                            navigate(0)
 
+                        }}> Submit </button>
                     </div>
-                    <button className={btnClass} type="submit" onClick={() => {
-                        handleSubmit()
-                        navigate('/')
 
-                    }}> Submit </button>
+                </div>
+                <div className="">
+                    {tags.map((tag) => (
+                        <li>{tag.text}</li>))}
                 </div>
             </div>
         </>

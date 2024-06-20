@@ -12,7 +12,14 @@ import cors from "cors";
 import { Shoe } from "../types/types.types";
 
 import express from "express";
-import { createNewTag } from "./tagDb";
+import {
+  createNewTag,
+  createTagOnShoe,
+  deleteTag,
+  getAllTags,
+  getTagsOnShoe,
+} from "./tagDb";
+import { create } from "domain";
 const app = express();
 
 app.use(cors());
@@ -92,9 +99,41 @@ app.post("/delete/shoe/:id", async (req, res) => {
 });
 
 app.post("/createTag", async (req, res) => {
-  const tagName: string = req.body.name;
+  const tagName: string = req.body.name.name;
   await createNewTag(tagName);
-  // Update details for a specific shoe
+  // create tag
+  res.send("deleted shoe");
+});
+
+app.get("/tags", async (req, res) => {
+  const tags = await getAllTags();
+  // send all tags
+  res.json(tags);
+});
+
+app.get("/tags/:id", async (req, res) => {
+  const shoeId = req.params.id;
+  const tags = await getTagsOnShoe(shoeId);
+  console.log(shoeId);
+  // send all tags on a specific shoe
+  res.json(tags);
+});
+
+app.post("/delete/tags/:id", async (req, res) => {
+  const tagId = req.params.id;
+  await deleteTag(tagId);
+  // delete tag
+  res.send("tag deleted");
+});
+
+app.post("/createTagOnShoe", async (req, res) => {
+  const shoeId: string = req.body.shoeId;
+  const tagId: string = req.body.tagId;
+  console.log("hey there");
+  console.log(shoeId, tagId);
+
+  await createTagOnShoe(shoeId, tagId);
+  // create tag on a shoe
   res.send("deleted shoe");
 });
 
