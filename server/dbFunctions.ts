@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-import { User } from "../types/types.types";
+import { Shoe, User } from "../types/types.types";
 
 // export async function main() {
 export const createNewUser = async (user: User) => {
@@ -14,8 +14,8 @@ export const createNewUser = async (user: User) => {
   });
 };
 // Create new shoes
-export const createNewShoe = async (shoe) => {
-  await prisma.shoe.create({
+export const createNewShoe = async (shoe: Shoe) => {
+  return await prisma.shoe.create({
     data: {
       name: shoe.name,
       description: shoe.description,
@@ -48,7 +48,7 @@ export const getOneShoe = async (shoeId: string) => {
 
 export const addFavoriteShoeToUser = async (userId: string, shoeId: string) => {
   // Create a user and shoe relationship
-  await prisma.usersToShoesFavorites.create({
+  return await prisma.usersToShoesFavorites.create({
     data: {
       userId: userId,
       shoeId: shoeId,

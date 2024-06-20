@@ -1,5 +1,6 @@
-import { describe, expect, expectTypeOf, test } from "vitest";
+import { beforeEach, describe, expect, expectTypeOf, test } from "vitest";
 import { PrismaClient } from "@prisma/client";
+import seed from "./seed";
 const prisma = new PrismaClient();
 
 const url = process.env.URL;

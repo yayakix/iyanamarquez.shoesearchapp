@@ -7,11 +7,13 @@ function Header() {
         title: 'Favorites',
         link: '/favorites'
     }, {
-        title: 'Create',
-        link: '/create'
-
+        title: 'Create Shoe',
+        link: '/createShoe'
+    },
+    {
+        title: 'Create Tag',
+        link: '/createTag'
     }]
-
 
     return (
         <>
