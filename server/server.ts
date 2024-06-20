@@ -1,6 +1,8 @@
 import bodyParser, { json } from "body-parser";
 import {
   addFavoriteShoeToUser,
+  createNewShoe,
+  deleteShoe,
   getAllShoes,
   getFavoriteShoes,
   getOneShoe,
@@ -35,11 +37,18 @@ app.post("/shoes", (req, res) => {
 
 app.get("/shoes/:id", async (req, res) => {
   const shoeId = req.params.id;
-  console.log(shoeId);
   const shoe = await getOneShoe(shoeId);
-  console.log(shoe);
   // send details for one shoe
   res.json(shoe);
+});
+
+app.post("/createShoe", async (req, res) => {
+  const shoeDetails = req.body.shoe;
+  console.log("hello");
+  console.log(shoeDetails);
+  const newShoe = await createNewShoe(shoeDetails);
+  // create a new shoe
+  res.send("new shoe created");
 });
 
 app.post("/favorites", async (req, res) => {
@@ -76,6 +85,13 @@ app.get("/user/:id", (req, res) => {
   // send details about the user
   // shoes include details about their favorites
   res.send("User details");
+});
+
+app.post("/delete/shoe/:id", async (req, res) => {
+  const shoeId = req.params.id;
+  await deleteShoe(shoeId);
+  // Update details for a specific shoe
+  res.send("deleted shoe");
 });
 
 app.listen(port, () => {

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { User } from "../types/types.types";
-
 const prisma = new PrismaClient();
+
+import { User } from "../types/types.types";
 
 // export async function main() {
 export const createNewUser = async (user: User) => {
@@ -10,6 +10,18 @@ export const createNewUser = async (user: User) => {
       name: user.name,
       email: user.email,
       avatar_url: user.avatar_url,
+    },
+  });
+};
+// Create new shoes
+export const createNewShoe = async (shoe) => {
+  await prisma.shoe.create({
+    data: {
+      name: shoe.name,
+      description: shoe.description,
+      price: shoe.price,
+      url: shoe.link,
+      image: shoe.imgUrl,
     },
   });
 };
@@ -63,6 +75,15 @@ export const removeFavoriteShoeFromUser = async (
   await prisma.usersToShoesFavorites.delete({
     where: {
       id: relationshipId,
+    },
+  });
+};
+
+export const deleteShoe = async (shoeId: string) => {
+  // Delete a shoe
+  await prisma.shoe.delete({
+    where: {
+      id: shoeId,
     },
   });
 };
