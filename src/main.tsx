@@ -9,6 +9,7 @@ import {
 import Item from './components/Item.tsx';
 import Favorites from './components/Favorites.tsx';
 import CreateItem from './components/CreateItem.tsx';
+import CreateTag from './components/CreateTag.tsx';
 
 export const defaultTestUser = {
   id: 'clxm4hnxg0000127n543sm1js',
@@ -36,8 +37,12 @@ const router = createBrowserRouter([
     element: <Item />,
   },
   {
-    path: "/create",
+    path: "/createShoe",
     element: <CreateItem />,
+  },
+  {
+    path: "/createTag",
+    element: <CreateTag />,
   },
 
 

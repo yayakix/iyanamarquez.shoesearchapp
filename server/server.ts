@@ -9,10 +9,11 @@ import {
   removeFavoriteShoeFromUser,
 } from "./dbFunctions";
 import cors from "cors";
+import { Shoe } from "../types/types.types";
 
-const express = require("express");
+import express from "express";
+import { createNewTag } from "./tagDb";
 const app = express();
-const port = process.env.PORT || 4001;
 
 app.use(cors());
 app.use(express.json());
@@ -25,7 +26,6 @@ app.get("/", (req, res) => {
 
 app.get("/shoes", async (req, res) => {
   const shoes = await getAllShoes();
-  console.log(shoes);
   // send all shoes
   res.json(shoes);
 });
@@ -36,19 +36,17 @@ app.post("/shoes", (req, res) => {
 });
 
 app.get("/shoes/:id", async (req, res) => {
-  const shoeId = req.params.id;
-  const shoe = await getOneShoe(shoeId);
+  const shoeId: string = req.params.id;
+  const shoe: Shoe | null = await getOneShoe(shoeId);
   // send details for one shoe
   res.json(shoe);
 });
 
 app.post("/createShoe", async (req, res) => {
-  const shoeDetails = req.body.shoe;
-  console.log("hello");
-  console.log(shoeDetails);
-  const newShoe = await createNewShoe(shoeDetails);
+  const shoeDetails: Shoe = req.body.shoe;
+  const newShoe: Shoe | null = await createNewShoe(shoeDetails);
   // create a new shoe
-  res.send("new shoe created");
+  res.json(newShoe);
 });
 
 app.post("/favorites", async (req, res) => {
@@ -64,17 +62,16 @@ app.post("/shoes/:id", (req, res) => {
 });
 
 app.post("/favorite/user/shoe", async (req, res) => {
-  const userId = req.body.userId;
-  const shoeId = req.body.shoeId;
-
+  const userId: string = req.body.userId;
+  const shoeId: string = req.body.shoeId;
   await addFavoriteShoeToUser(userId, shoeId);
   // Add shoe as a favorite for the user
   res.send("favorited shoe");
 });
 
 app.post("/remove/favorite/user/shoe", async (req, res) => {
-  const userId = req.body.userId;
-  const shoeId = req.body.shoeId;
+  const userId: string = req.body.userId;
+  const shoeId: string = req.body.shoeId;
 
   await removeFavoriteShoeFromUser(userId, shoeId);
   // Add shoe as a favorite for the user
@@ -88,12 +85,17 @@ app.get("/user/:id", (req, res) => {
 });
 
 app.post("/delete/shoe/:id", async (req, res) => {
-  const shoeId = req.params.id;
+  const shoeId: string = req.params.id;
   await deleteShoe(shoeId);
   // Update details for a specific shoe
   res.send("deleted shoe");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.post("/createTag", async (req, res) => {
+  const tagName: string = req.body.name;
+  await createNewTag(tagName);
+  // Update details for a specific shoe
+  res.send("deleted shoe");
 });
+
+export default app;

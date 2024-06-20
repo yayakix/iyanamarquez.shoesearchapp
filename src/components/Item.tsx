@@ -6,7 +6,6 @@ import { ItemCard } from "./ItemCard";
 function Item() {
 
     const { id } = useParams();
-    console.log(id)
     const [item, setItem] = useState<any>('')
     const url = 'http://localhost:4000'
     // Get all products
