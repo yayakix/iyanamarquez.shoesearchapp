@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { defaultTestUser } from "../main";
+import { useEffect, useState } from "react";
 
 interface ItemProps {
     name: string,
@@ -14,6 +15,7 @@ export function ItemCard({ name, url, description, price, image }: ItemProps) {
     const shoeId = id
     const userId = defaultTestUser.id
     const navigate = useNavigate();
+    const [shoeTag, setShoeTag] = useState<any>([])
 
 
     const addToFavorites = () => {
@@ -58,6 +60,25 @@ export function ItemCard({ name, url, description, price, image }: ItemProps) {
             },
         })
     }
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/tags/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(res => res.json()).then((data) => {
+            setShoeTag(data)
+        })
+
+    }, [])
+    const tagStyle = (idx) => {
+        if (idx % 2 == 0) {
+            return 'bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded'
+        }
+        else if (idx % 3 == 0) { return "bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300" }
+        else { return 'bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded' }
+    }
     return (
         <>
             <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border !text-gray-700 shadow-md">
@@ -79,7 +100,16 @@ export function ItemCard({ name, url, description, price, image }: ItemProps) {
                     <p className="block font-sans text-lg font-normal leading-normal text-gray-700 antialiased opacity-75">
                         {description}
                     </p>
+                    <div className="flex flex-wrap gap-2">
+                        {shoeTag.map((tag, idx) => {
+                            return <span className={tagStyle(idx)} > {tag.text}</span>
+
+                        })}
+
+                    </div>
+
                 </div>
+
                 <div className="p-6 pt-0">
                     <button
                         className="mb-4 block w-full select-none rounded-lg bg-blue-gray-900/10 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-blue-gray-900 transition-all hover:scale-105 focus:scale-103 focus:opacity-[0.65] active:scale-100 active:opacity-[0.65] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -114,7 +144,7 @@ export function ItemCard({ name, url, description, price, image }: ItemProps) {
                         Delete Shoe
                     </button>
                 </div>
-            </div>
+            </div >
         </>
 
     );
