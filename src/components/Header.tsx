@@ -7,8 +7,8 @@ function Header() {
         title: 'Favorites',
         link: '/favorites'
     }, {
-        title: 'Contact',
-        link: '/'
+        title: 'Create',
+        link: '/create'
 
     }]
 

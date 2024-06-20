@@ -8,7 +8,11 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest"
+    "test:run": "echo 'helloworld' && npx vitest run",
+    "test:db:up": "docker compose -f docker-compose-test.yml up -d && echo 'helloworld2'",
+    "test:db:down": "echo 'helloworld3' && docker compose -f docker-compose-test.yml down",
+    "db:migrate": "npx prisma migrate dev",
+    "test": "npm run test:db:up && npx dotenv-cli -e .env.test -- npm run db:migrate && npx dotenv-cli -e .env.test -- npm run test:run && npm run test:db:down"
   },
   "dependencies": {
     "@material-tailwind/react": "^2.1.9",

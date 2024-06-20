@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Item from './components/Item.tsx';
 import Favorites from './components/Favorites.tsx';
+import CreateItem from './components/CreateItem.tsx';
 
 export const defaultTestUser = {
   id: 'clxm4hnxg0000127n543sm1js',
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/products/:id",
     element: <Item />,
+  },
+  {
+    path: "/create",
+    element: <CreateItem />,
   },
 
 

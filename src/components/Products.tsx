@@ -12,28 +12,22 @@ export default function Products() {
                 "Content-Type": "application/json",
             }
         }).then(res => res.json()).then((data) => {
-            console.log('boop')
-            console.log(data)
             setProducts(data)
         }).catch((error) => {
-            console.log('error')
-            const errorCode = error.code;
-            const errorMessage = error.message;
+
         });
-
-
     }, [])
 
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-                <h2 className="text-black text-center text-5xl mb-16">Products</h2>
+                <h2 className="text-black text-center text-5xl mb-16 underline">Products</h2>
                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                     {products.map((product) => (
                         <Link key={product.id} to={`/products/${product.id}`} className="group">
                             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 md:h-64">
                                 <img
-                                    src={product.url}
+                                    src={product.image}
                                     alt={product.description}
                                     className="h-full w-full object-cover object-center group-hover:opacity-75"
                                 />

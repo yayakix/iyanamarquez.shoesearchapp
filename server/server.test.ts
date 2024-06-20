@@ -1,4 +1,6 @@
 import { describe, expect, expectTypeOf, test } from "vitest";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 const url = process.env.URL;
 
