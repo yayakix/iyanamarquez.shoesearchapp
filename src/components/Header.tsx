@@ -1,3 +1,4 @@
+import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/clerk-react"
 import { Link } from "react-router-dom"
 function Header() {
     const list = [{
@@ -23,6 +24,12 @@ function Header() {
                     data-twe-navbar-ref>
                     <div className="flex w-full flex-wrap items-center justify-between px-3">
                         <div className="flex items-center">
+                            <SignedOut>
+                                <SignInButton />
+                            </SignedOut>
+                            <SignedIn>
+                                <UserButton />
+                            </SignedIn>
                             <button
                                 className="border-0 bg-transparent px-2 text-xl leading-none transition-shadow duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 lg:hidden"
                                 type="button"
