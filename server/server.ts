@@ -1,4 +1,4 @@
-import bodyParser, { json } from "body-parser";
+import bodyParser from "body-parser";
 import {
   addFavoriteShoeToUser,
   createNewShoe,
@@ -7,21 +7,15 @@ import {
   getFavoriteShoes,
   getOneShoe,
   removeFavoriteShoeFromUser,
+  searchShoes,
 } from "./dbFunctions";
 import cors from "cors";
-import { Shoe } from "../types/types.types";
+import { Shoe } from "@prisma/client";
 
 import "dotenv/config"; // To read CLERK_SECRET_KEY and CLERK_PUBLISHABLE_KEY
 // clerk auth
-import {
-  clerkClient,
-  ClerkExpressRequireAuth,
-  ClerkExpressWithAuth,
-  LooseAuthProp,
-  RequireAuthProp,
-  WithAuthProp,
-} from "@clerk/clerk-sdk-node";
-import express, { Application, Request, Response } from "express";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
+import express from "express";
 
 import {
   createNewTag,
@@ -30,7 +24,7 @@ import {
   getAllTags,
   getTagsOnShoe,
 } from "./tagDb";
-import { create } from "domain";
+
 import optionalUser from "./middleware";
 const app = express();
 
@@ -45,22 +39,28 @@ app.get("/", (req, res) => {
 
 app.get(
   "/shoes",
-  ClerkExpressRequireAuth({
-    // Add options here
-    // See the Middleware options section for more details
-  }),
-  optionalUser,
+  // ClerkExpressRequireAuth({}),
+  // optionalUser,
   async (req, res) => {
-    console.log("req", req.user);
     const shoes = await getAllShoes();
     // send all shoes
     res.json(shoes);
   }
 );
 
-app.post("/shoes", (req, res) => {
-  // post a new shoe to list
-  res.send("new shoe created");
+app.get("/shoes/search", async (req, res) => {
+  const query = req.query.query as string;
+  console.log("query issssss", query);
+  if (!query) {
+    return res.json({ error: "Query parameter is required" });
+  }
+
+  // Implement your search logic here
+  const shoes = await searchShoes(query); // Assume searchShoes is a function that searches shoes based on the query
+  if (shoes.length === 0) {
+    return res.json({ message: "No shoes found" });
+  }
+  res.json(shoes);
 });
 
 app.get("/shoes/:id", async (req, res) => {
@@ -75,7 +75,10 @@ app.post(
   ClerkExpressRequireAuth({}),
   optionalUser,
   async (req, res) => {
-    const userId = req.user.id;
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized, no User ID" });
+    }
     const shoeDetails: Shoe = req.body.shoe;
     const newShoe: Shoe | null = await createNewShoe(shoeDetails, userId);
     // create a new shoe
@@ -88,7 +91,10 @@ app.post(
   ClerkExpressRequireAuth({}),
   optionalUser,
   async (req, res) => {
-    const userId = req.user.id;
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized, no User ID" });
+    }
     const shoes = await getFavoriteShoes(userId);
     // send details for all favorite shoes
     res.json(shoes);
@@ -105,7 +111,10 @@ app.post(
   ClerkExpressRequireAuth({}),
   optionalUser,
   async (req, res) => {
-    const userId: string = req.user.id;
+    const userId: string | undefined = req?.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized, no User ID" });
+    }
     const shoeId: string = req.body.shoeId;
     await addFavoriteShoeToUser(userId, shoeId);
     console.log("erm that didnt wortk");
@@ -119,11 +128,13 @@ app.post(
   ClerkExpressRequireAuth({}),
   optionalUser,
   async (req, res) => {
-    const userId: string = req.user.id;
+    const userId: string | undefined = req?.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized, no User ID" });
+    }
     const shoeId: string = req.body.shoeId;
 
     await removeFavoriteShoeFromUser(userId, shoeId);
-    // Add shoe as a favorite for the user
     res.send("removed shoe from favorites");
   }
 );

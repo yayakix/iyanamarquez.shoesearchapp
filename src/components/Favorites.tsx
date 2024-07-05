@@ -9,13 +9,13 @@ import { useAuth } from "@clerk/clerk-react";
 function Favorites() {
 
     const [favorites, setFavorites] = useState<any[]>([])
-    const url = 'http://localhost:4000'
+    const URL = import.meta.env.VITE_REACT_APP_API_URL;
     // Get all products
     const { getToken } = useAuth();
 
     useEffect(() => {
         (async () => {
-            fetch(`http://localhost:4000/favorites`, {
+            fetch(`${URL}/favorites`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

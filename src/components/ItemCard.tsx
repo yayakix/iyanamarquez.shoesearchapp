@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { defaultTestUser } from "../main";
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
@@ -8,10 +7,10 @@ interface ItemProps {
     url: string,
     description: string,
     price: string
-    imageUrl: string
+    image: string
 }
 
-export function ItemCard({ name, url, description, price, image }: ItemProps) {
+export function ItemCard({ name, description, price, image }: ItemProps) {
     const { id } = useParams()
     const shoeId = id
     const navigate = useNavigate();
@@ -34,8 +33,9 @@ export function ItemCard({ name, url, description, price, image }: ItemProps) {
                 },
                 body: JSON.stringify(data),
             }).then(res => res.json()).then((data) => {
+                console.log("data", data);
             }).catch((error) => {
-                console.log('error')
+                console.log('error', error);
             });
         })()
     }
@@ -77,7 +77,7 @@ export function ItemCard({ name, url, description, price, image }: ItemProps) {
         })
 
     }, [])
-    const tagStyle = (idx) => {
+    const tagStyle = (idx: number) => {
         if (idx % 2 == 0) {
             return 'bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded'
         }
@@ -106,7 +106,7 @@ export function ItemCard({ name, url, description, price, image }: ItemProps) {
                         {description}
                     </p>
                     <div className="flex flex-wrap gap-2">
-                        {shoeTag.map((tag, idx) => {
+                        {shoeTag.map((tag: any, idx: number) => {
                             return <span className={tagStyle(idx)} > {tag.text}</span>
 
                         })}
