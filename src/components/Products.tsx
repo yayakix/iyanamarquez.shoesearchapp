@@ -1,21 +1,29 @@
+import { useAuth } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Products() {
     const [products, setProducts] = useState<any[]>([])
+    const { getToken } = useAuth();
+
     const url = 'http://localhost:4000'
     // Get all products
     useEffect(() => {
-        fetch(`http://localhost:4000/shoes`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        }).then(res => res.json()).then((data) => {
-            setProducts(data)
-        }).catch((error) => {
+        (async () => {
+            fetch(`${url}/shoes`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${await getToken()}`
+                }
+            }).then(res => res.json()).then((data) => {
+                setProducts(data)
+            }).catch((error) => {
 
-        });
+            });
+        })()
+
+
     }, [])
 
     return (

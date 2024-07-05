@@ -14,7 +14,7 @@ export const createNewUser = async (user: User) => {
   });
 };
 // Create new shoes
-export const createNewShoe = async (shoe: Shoe) => {
+export const createNewShoe = async (shoe: Shoe, userId: string) => {
   return await prisma.shoe.create({
     data: {
       name: shoe.name,
@@ -22,6 +22,9 @@ export const createNewShoe = async (shoe: Shoe) => {
       price: shoe.price,
       url: shoe.link,
       image: shoe.imgUrl,
+      createdBy: {
+        connect: { id: userId },
+      },
     },
   });
 };
@@ -48,6 +51,7 @@ export const getOneShoe = async (shoeId: string) => {
 
 export const addFavoriteShoeToUser = async (userId: string, shoeId: string) => {
   // Create a user and shoe relationship
+  console.log("attempting to make user shoes relationship");
   return await prisma.usersToShoesFavorites.create({
     data: {
       userId: userId,

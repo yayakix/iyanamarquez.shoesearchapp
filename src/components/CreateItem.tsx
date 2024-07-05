@@ -1,6 +1,8 @@
 import Header from "./Header"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@clerk/clerk-react";
+
 
 const initialValues = {
     name: "",
@@ -11,9 +13,10 @@ const initialValues = {
 };
 
 function CreateItem() {
+    const { getToken } = useAuth();
+
     // FETCH TO POST NEW CARD
     const navigate = useNavigate();
-
     const [values, setValues] = useState(initialValues);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -27,16 +30,16 @@ function CreateItem() {
     const btnClass = 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
 
     const handleSubmit = () => {
-        console.log(values)
-
-        fetch(`http://localhost:4000/createShoe`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ shoe: values }),
-        })
-
+        (async () => {
+            fetch(`http://localhost:4000/createShoe`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${await getToken()}`
+                },
+                body: JSON.stringify({ shoe: values }),
+            })
+        })()
     }
 
     return (

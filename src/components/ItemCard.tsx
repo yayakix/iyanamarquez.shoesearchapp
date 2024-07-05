@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { defaultTestUser } from "../main";
 import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/clerk-react";
 
 interface ItemProps {
     name: string,
@@ -13,43 +14,47 @@ interface ItemProps {
 export function ItemCard({ name, url, description, price, image }: ItemProps) {
     const { id } = useParams()
     const shoeId = id
-    const userId = defaultTestUser.id
     const navigate = useNavigate();
     const [shoeTag, setShoeTag] = useState<any>([])
 
 
-    const addToFavorites = () => {
-        const data = {
-            userId: userId,
-            shoeId: shoeId
-        }
+    const { getToken } = useAuth();
+    const addToFavorites = async () => {
 
-        fetch(`http://localhost:4000/favorite/user/shoe`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        }).then(res => res.json()).then((data) => {
-        }).catch((error) => {
-            console.log('error')
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
+        (async () => {
+
+            const data = {
+                shoeId: shoeId
+            }
+            fetch(`http://localhost:4000/favorite/user/shoe`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${await getToken()}`
+                },
+                body: JSON.stringify(data),
+            }).then(res => res.json()).then((data) => {
+            }).catch((error) => {
+                console.log('error')
+            });
+        })()
     }
 
-    const removeFromFavorites = () => {
-        const data = {
-            userId: userId,
-            shoeId: shoeId
-        }
-        fetch(`http://localhost:4000/remove/favorite/user/shoe`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
+    const removeFromFavorites = async () => {
+
+        (async () => {
+            const data = {
+                shoeId: shoeId
+            }
+            fetch(`http://localhost:4000/remove/favorite/user/shoe`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${await getToken()}`
+                },
+                body: JSON.stringify(data),
+            })
+        })()
     }
 
     const deleteShoe = () => {

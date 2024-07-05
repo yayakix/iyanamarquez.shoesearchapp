@@ -22,6 +22,7 @@ model User {
   clerkId    String @unique
 
   favoriteShoes UsersToShoesFavorites[]
+  createdShoes  Shoe[]
 }
 
 model Shoe {
@@ -34,6 +35,8 @@ model Shoe {
 
   favoritedBy UsersToShoesFavorites[]
   tags        ShoesToTags[]
+  createdBy   User                    @relation(fields: [createdById], references: [id])
+  createdById String
 }
 
 model Tags {
@@ -46,16 +49,16 @@ model UsersToShoesFavorites {
   id         String   @id @default(cuid())
   user       User     @relation(fields: [userId], references: [id])
   userId     String
-  shoe       Shoe     @relation(fields: [shoeId], references: [id])
+  shoe       Shoe     @relation(fields: [shoeId], references: [id], onDelete: Cascade)
   shoeId     String
   assignedAt DateTime @default(now())
 }
 
 model ShoesToTags {
   id         String   @id @default(cuid())
-  tag        Tags     @relation(fields: [tagId], references: [id])
-  tagId      String
-  shoe       Shoe     @relation(fields: [shoeId], references: [id])
-  shoeId     String
+  tag        Tags?    @relation(fields: [tagId], references: [id]) // Make tag optional
+  tagId      String?
+  shoe       Shoe?    @relation(fields: [shoeId], references: [id]) // Make shoe optional
+  shoeId     String?
   assignedAt DateTime @default(now())
 }

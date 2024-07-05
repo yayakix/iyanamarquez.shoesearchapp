@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "./Header"
 import { defaultTestUser } from "../main";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "@clerk/clerk-react";
 
 
 
@@ -11,17 +11,23 @@ function Favorites() {
     const [favorites, setFavorites] = useState<any[]>([])
     const url = 'http://localhost:4000'
     // Get all products
+    const { getToken } = useAuth();
+
     useEffect(() => {
-        fetch(`http://localhost:4000/favorites`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ id: defaultTestUser.id }),
-        }).then(res => res.json()).then((data) => {
-            setFavorites(data)
-        }).catch((error) => {
-        });
+        (async () => {
+            fetch(`http://localhost:4000/favorites`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${await getToken()}`
+
+                },
+                body: JSON.stringify({ id: defaultTestUser.id }),
+            }).then(res => res.json()).then((data) => {
+                setFavorites(data)
+            }).catch((error) => {
+            });
+        })()
     }, [])
 
     // get current users list of favorites
