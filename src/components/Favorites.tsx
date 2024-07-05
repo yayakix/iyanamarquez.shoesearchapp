@@ -26,6 +26,7 @@ function Favorites() {
             }).then(res => res.json()).then((data) => {
                 setFavorites(data)
             }).catch((error) => {
+                console.log(error)
             });
         })()
     }, [])
