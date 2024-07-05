@@ -12,12 +12,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const optionalUser = async (
-  req: WithAuthProp<Request>,
-  res: Response,
-  next: NextFunction
-) => {
-  console.log("erm here");
+const optionalUser = async (req, res: Response, next: NextFunction) => {
   const userId = req.auth.userId;
   if (!userId) {
     return next(new Error("User ID is null"));

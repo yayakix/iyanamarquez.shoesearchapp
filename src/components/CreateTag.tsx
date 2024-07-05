@@ -7,7 +7,6 @@ const initialValues = {
 };
 
 function CreateTag() {
-
     const [tags, setTags] = useState<any>([])
     const url = 'http://localhost:4000'
     // Get all products
@@ -40,16 +39,14 @@ function CreateTag() {
     const btnClass = 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
 
     const handleSubmit = () => {
-        console.log(values)
-
         fetch(`http://localhost:4000/createTag`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+
             },
             body: JSON.stringify({ name: values }),
         })
-
     }
 
     return (
@@ -67,7 +64,6 @@ function CreateTag() {
                                 <label className={labelClass}>Tag Name</label>
                                 <input className={inputClass} type="text" name="name" onChange={handleInputChange} value={values.name}></input>
                             </div>
-
                         </div>
                         <button className={btnClass} type="submit" onClick={() => {
                             handleSubmit()
@@ -75,7 +71,6 @@ function CreateTag() {
 
                         }}> Submit </button>
                     </div>
-
                 </div>
                 <div className="">
                     {tags.map((tag) => (

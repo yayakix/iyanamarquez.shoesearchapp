@@ -18,6 +18,7 @@ import {
   ClerkExpressRequireAuth,
   ClerkExpressWithAuth,
   LooseAuthProp,
+  RequireAuthProp,
   WithAuthProp,
 } from "@clerk/clerk-sdk-node";
 import express, { Application, Request, Response } from "express";
@@ -44,15 +45,13 @@ app.get("/", (req, res) => {
 
 app.get(
   "/shoes",
-  ClerkExpressWithAuth({
+  ClerkExpressRequireAuth({
     // Add options here
     // See the Middleware options section for more details
   }),
   optionalUser,
   async (req, res) => {
-    console.log("made it to the end of slash shoes");
-    const user = await clerkClient.users.getUser(req.auth.userId);
-    console.log("user", user);
+    console.log("req", req.user);
     const shoes = await getAllShoes();
     // send all shoes
     res.json(shoes);
@@ -71,41 +70,63 @@ app.get("/shoes/:id", async (req, res) => {
   res.json(shoe);
 });
 
-app.post("/createShoe", async (req, res) => {
-  const shoeDetails: Shoe = req.body.shoe;
-  const newShoe: Shoe | null = await createNewShoe(shoeDetails);
-  // create a new shoe
-  res.json(newShoe);
-});
+app.post(
+  "/createShoe",
+  ClerkExpressRequireAuth({}),
+  optionalUser,
+  async (req, res) => {
+    const userId = req.user.id;
+    const shoeDetails: Shoe = req.body.shoe;
+    const newShoe: Shoe | null = await createNewShoe(shoeDetails, userId);
+    // create a new shoe
+    res.json(newShoe);
+  }
+);
 
-app.post("/favorites", async (req, res) => {
-  const userId = req.body.id;
-  const shoes = await getFavoriteShoes(userId);
-  // send details for all favorite shoes
-  res.json(shoes);
-});
+app.post(
+  "/favorites",
+  ClerkExpressRequireAuth({}),
+  optionalUser,
+  async (req, res) => {
+    const userId = req.user.id;
+    const shoes = await getFavoriteShoes(userId);
+    // send details for all favorite shoes
+    res.json(shoes);
+  }
+);
 
 app.post("/shoes/:id", (req, res) => {
   // Update details for a specific shoe
   res.send("updated shoe");
 });
 
-app.post("/favorite/user/shoe", async (req, res) => {
-  const userId: string = req.body.userId;
-  const shoeId: string = req.body.shoeId;
-  await addFavoriteShoeToUser(userId, shoeId);
-  // Add shoe as a favorite for the user
-  res.send("favorited shoe");
-});
+app.post(
+  "/favorite/user/shoe",
+  ClerkExpressRequireAuth({}),
+  optionalUser,
+  async (req, res) => {
+    const userId: string = req.user.id;
+    const shoeId: string = req.body.shoeId;
+    await addFavoriteShoeToUser(userId, shoeId);
+    console.log("erm that didnt wortk");
+    // Add shoe as a favorite for the user
+    res.send("favorited shoe");
+  }
+);
 
-app.post("/remove/favorite/user/shoe", async (req, res) => {
-  const userId: string = req.body.userId;
-  const shoeId: string = req.body.shoeId;
+app.post(
+  "/remove/favorite/user/shoe",
+  ClerkExpressRequireAuth({}),
+  optionalUser,
+  async (req, res) => {
+    const userId: string = req.user.id;
+    const shoeId: string = req.body.shoeId;
 
-  await removeFavoriteShoeFromUser(userId, shoeId);
-  // Add shoe as a favorite for the user
-  res.send("removed shoe from favorites");
-});
+    await removeFavoriteShoeFromUser(userId, shoeId);
+    // Add shoe as a favorite for the user
+    res.send("removed shoe from favorites");
+  }
+);
 
 app.get("/user/:id", (req, res) => {
   // send details about the user
