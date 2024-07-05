@@ -87,13 +87,17 @@ function Item() {
                     />
                 </div>
                 <div className="flex flex-col content-start mt-10 lg-mt-0 ">
-                    <h1 className="text-3xl w-full h-10">Add tags</h1>
+                    <h1 className="text-3xl w-full h-10 underline mb-4">Add tags</h1>
                     <div>
                         <ul>
                             {tags.map((tag) => {
                                 return (
-                                    <li key={tag.id} className="text-2xl">
-                                        {tag.text}
+                                    <div className="flex flex-row justify-between space-x-4">
+
+                                        <li key={tag.id} className="text-2xl">
+                                            {tag.text}
+
+                                        </li>
                                         <button
                                             value={tag.id}
                                             className=" bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 border border-gray-400 rounded shadow text-sm"
@@ -104,7 +108,7 @@ function Item() {
                                         >
                                             Add
                                         </button>
-                                    </li>
+                                    </div>
                                 );
                             })}
                         </ul>

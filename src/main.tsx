@@ -10,6 +10,10 @@ import Item from './components/Item.tsx';
 import Favorites from './components/Favorites.tsx';
 import CreateItem from './components/CreateItem.tsx';
 import CreateTag from './components/CreateTag.tsx';
+import { ClerkProvider } from '@clerk/clerk-react'
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
 
 export const defaultTestUser = {
   id: 'clxm4hnxg0000127n543sm1js',
@@ -17,7 +21,6 @@ export const defaultTestUser = {
   name: 'Alice',
   avatar_url: 'link.com'
 }
-
 
 const router = createBrowserRouter([
   {
@@ -44,12 +47,14 @@ const router = createBrowserRouter([
     path: "/createTag",
     element: <CreateTag />,
   },
-
-
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+
+      <RouterProvider router={router} />
+    </ClerkProvider>
+
   </React.StrictMode>,
 )

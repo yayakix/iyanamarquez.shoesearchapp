@@ -11,7 +11,17 @@ import {
 import cors from "cors";
 import { Shoe } from "../types/types.types";
 
-import express from "express";
+import "dotenv/config"; // To read CLERK_SECRET_KEY and CLERK_PUBLISHABLE_KEY
+// clerk auth
+import {
+  clerkClient,
+  ClerkExpressRequireAuth,
+  ClerkExpressWithAuth,
+  LooseAuthProp,
+  WithAuthProp,
+} from "@clerk/clerk-sdk-node";
+import express, { Application, Request, Response } from "express";
+
 import {
   createNewTag,
   createTagOnShoe,
@@ -20,6 +30,7 @@ import {
   getTagsOnShoe,
 } from "./tagDb";
 import { create } from "domain";
+import optionalUser from "./middleware";
 const app = express();
 
 app.use(cors());
@@ -31,11 +42,22 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/shoes", async (req, res) => {
-  const shoes = await getAllShoes();
-  // send all shoes
-  res.json(shoes);
-});
+app.get(
+  "/shoes",
+  ClerkExpressWithAuth({
+    // Add options here
+    // See the Middleware options section for more details
+  }),
+  optionalUser,
+  async (req, res) => {
+    console.log("made it to the end of slash shoes");
+    const user = await clerkClient.users.getUser(req.auth.userId);
+    console.log("user", user);
+    const shoes = await getAllShoes();
+    // send all shoes
+    res.json(shoes);
+  }
+);
 
 app.post("/shoes", (req, res) => {
   // post a new shoe to list

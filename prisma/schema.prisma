@@ -18,6 +18,8 @@ model User {
   email      String @unique
   name       String
   avatar_url String
+  username   String
+  clerkId    String @unique
 
   favoriteShoes UsersToShoesFavorites[]
 }
