@@ -5,20 +5,18 @@ import { ItemCard } from "./ItemCard";
 import { useNavigate } from "react-router-dom";
 
 function Item() {
-    const url = "http://localhost:4000";
+    const URL = import.meta.env.VITE_REACT_APP_API_URL;
 
     const navigate = useNavigate();
 
     const [tags, setTags] = useState<any>([]);
-    const [shoeTags, setShoeTags] = useState<any>([]);
-
     const { id } = useParams();
     const [item, setItem] = useState<any>("");
     const shoeId = id;
 
     // Get all tags
     useEffect(() => {
-        fetch(`${url}/tags`, {
+        fetch(`${URL}/tags`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -28,12 +26,12 @@ function Item() {
             .then((data) => {
                 setTags(data);
             })
-            .catch((error) => { });
+            .catch((error) => { console.log("error", error); });
     }, []);
 
     // Get current shoe details
     useEffect(() => {
-        fetch(`${url}/shoes/${id}`, {
+        fetch(`${URL}/shoes/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -43,12 +41,12 @@ function Item() {
             .then((data) => {
                 setItem(data);
             })
-            .catch((error) => { });
+            .catch((error) => { console.log("error", error); });
     }, []);
 
-    const createTagOnShoe = (e) => {
+    const createTagOnShoe = (e: React.ChangeEvent<HTMLButtonElement>) => {
         const tagId = e.target.value;
-        fetch(`http://localhost:4000/createTagOnShoe`, {
+        fetch(`${URL}/createTagOnShoe`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -58,7 +56,7 @@ function Item() {
     };
     // make a use effect
     useEffect(() => {
-        fetch(`http://localhost:4000/tags/${id}`, {
+        fetch(`${URL}/tags/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -66,8 +64,9 @@ function Item() {
         })
             .then((res) => res.json())
             .then((data) => {
-                setShoeTags(data);
-            });
+                console.log("data", data);
+            })
+            .catch((error) => { console.log("error", error); });
     }, []);
 
     // fetch single item
@@ -83,14 +82,13 @@ function Item() {
                         price={item.price}
                         description={item.description}
                         image={item.image}
-                        shoeTags={shoeTags}
                     />
                 </div>
                 <div className="flex flex-col content-start mt-10 lg-mt-0 ">
                     <h1 className="text-3xl w-full h-10 underline mb-4">Add tags</h1>
                     <div>
                         <ul>
-                            {tags.map((tag) => {
+                            {tags.map((tag: any) => {
                                 return (
                                     <div className="flex flex-row justify-between space-x-4">
 
@@ -101,8 +99,8 @@ function Item() {
                                         <button
                                             value={tag.id}
                                             className=" bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 border border-gray-400 rounded shadow text-sm"
-                                            onClick={(e) => {
-                                                createTagOnShoe(e);
+                                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                                createTagOnShoe(e as unknown as React.ChangeEvent<HTMLButtonElement>);
                                                 navigate(0);
                                             }}
                                         >

@@ -8,10 +8,10 @@ const initialValues = {
 
 function CreateTag() {
     const [tags, setTags] = useState<any>([])
-    const url = 'http://localhost:4000'
+    const URL = import.meta.env.VITE_REACT_APP_API_URL;
     // Get all products
     useEffect(() => {
-        fetch(`${url}/tags/`, {
+        fetch(`${URL}/tags/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -19,21 +19,22 @@ function CreateTag() {
         }).then(res => res.json()).then((data) => {
             setTags(data)
         }).catch((error) => {
+            console.error("Error fetching tags:", error);
         });
     }, [])
 
 
     // FETCH TO POST NEW CARD
     const navigate = useNavigate();
-
     const [values, setValues] = useState(initialValues);
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setValues({
             ...values,
             [name]: value,
         });
     }
+
     const labelClass = 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'
     const inputClass = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
     const btnClass = 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
@@ -73,8 +74,8 @@ function CreateTag() {
                     </div>
                 </div>
                 <div className="">
-                    {tags.map((tag) => (
-                        <li>{tag.text}</li>))}
+                    {tags.map((tag: any) => (
+                        <li key={tag.id}>{tag.text}</li>))}
                 </div>
             </div>
         </>
