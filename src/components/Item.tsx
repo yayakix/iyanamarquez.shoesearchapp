@@ -44,16 +44,20 @@ function Item() {
             .catch((error) => { console.log("error", error); });
     }, []);
 
-    const createTagOnShoe = (e: React.ChangeEvent<HTMLButtonElement>) => {
-        const tagId = e.target.value;
+    const createTagOnShoe = (tagId: string) => {
         fetch(`${URL}/createTagOnShoe`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ tagId: tagId, shoeId: shoeId }),
-        });
+        })
+            .then(() => {
+                navigate(0);
+            })
+            .catch((error) => { console.log("error", error); });
     };
+
     // make a use effect
     useEffect(() => {
         fetch(`${URL}/tags/${id}`, {
@@ -90,19 +94,14 @@ function Item() {
                         <ul>
                             {tags.map((tag: any) => {
                                 return (
-                                    <div className="flex flex-row justify-between space-x-4">
-
-                                        <li key={tag.id} className="text-2xl">
+                                    <div className="flex flex-row justify-between space-x-4" key={tag.id}>
+                                        <li className="text-2xl">
                                             {tag.text}
-
                                         </li>
                                         <button
                                             value={tag.id}
-                                            className=" bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 border border-gray-400 rounded shadow text-sm"
-                                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                                createTagOnShoe(e as unknown as React.ChangeEvent<HTMLButtonElement>);
-                                                navigate(0);
-                                            }}
+                                            className="bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 border border-gray-400 rounded shadow text-sm"
+                                            onClick={() => createTagOnShoe(tag.id)}
                                         >
                                             Add
                                         </button>

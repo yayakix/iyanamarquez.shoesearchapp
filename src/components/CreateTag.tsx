@@ -42,7 +42,8 @@ function CreateTag() {
     const inputClass = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
     const btnClass = 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         (async () => {
             fetch(`${URL}/createTag`, {
                 method: "POST",
@@ -52,6 +53,10 @@ function CreateTag() {
 
                 },
                 body: JSON.stringify({ name: values }),
+            }).then(() => {
+                navigate(0)
+            }).catch((error) => {
+                console.log("error", error);
             })
         })()
 
@@ -65,19 +70,17 @@ function CreateTag() {
             <div className="flex justify-center">
                 <div className="flex flex-col">
                     <div className="">
+                        <form onSubmit={handleSubmit}>
 
-                        <div className="grid gap-6 mb-6 md:grid-cols-2">
-                            {/* form to submit data */}
-                            <div>
-                                <label className={labelClass}>Tag Name</label>
-                                <input className={inputClass} type="text" name="name" onChange={handleInputChange} value={values.name}></input>
+                            <div className="grid gap-6 mb-6 md:grid-cols-2">
+                                {/* form to submit data */}
+                                <div>
+                                    <label className={labelClass}>Tag Name</label>
+                                    <input className={inputClass} type="text" name="name" onChange={handleInputChange} value={values.name}></input>
+                                </div>
                             </div>
-                        </div>
-                        <button className={btnClass} type="submit" onClick={() => {
-                            handleSubmit()
-                            navigate(0)
-
-                        }}> Submit </button>
+                            <button className={btnClass} type="submit"> Submit </button>
+                        </form>
                     </div>
                 </div>
                 <div className="">
