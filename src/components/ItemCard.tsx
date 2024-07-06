@@ -27,18 +27,18 @@ export function ItemCard({ name, description, price, image }: ItemProps) {
             const data = {
                 shoeId: shoeId
             }
-            fetch(`${URL}/favorite/user/shoe`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${await getToken()}`
-                },
-                body: JSON.stringify(data),
-            }).then(res => res.json()).then((data) => {
-                console.log("data", data);
-            }).catch((error) => {
+            try {
+                fetch(`${URL}/favorite/user/shoe`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${await getToken()}`
+                    },
+                    body: JSON.stringify(data),
+                })
+            } catch (error) {
                 console.log('error', error);
-            });
+            }
         })()
     }
 
