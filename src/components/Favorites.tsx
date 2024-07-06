@@ -4,8 +4,6 @@ import { defaultTestUser } from "../main";
 import { Link } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 
-
-
 function Favorites() {
 
     const [favorites, setFavorites] = useState<any[]>([])
@@ -33,21 +31,15 @@ function Favorites() {
 
     // get current users list of favorites
 
-
     return (
         <>
             <Header />
             <h1>List of test users favorite shoes</h1>
             <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                 <div className="text-black text-center mb-16">
-
                     <h2 className="text-black text-center text-5xl mb-10">Favorites </h2>
                     {favorites.length == 0 ? <h3 className="text-2xl">you have none</h3> : null}
-
-
                 </div>
-
-
                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
                     {favorites.map((product) => (
