@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Header from "./Header"
-import { defaultTestUser } from "../main";
 import { Link } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 
@@ -20,7 +19,6 @@ function Favorites() {
                     "Authorization": `Bearer ${await getToken()}`
 
                 },
-                body: JSON.stringify({ id: defaultTestUser.id }),
             }).then(res => res.json()).then((data) => {
                 setFavorites(data)
             }).catch((error) => {

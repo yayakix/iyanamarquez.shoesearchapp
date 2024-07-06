@@ -14,14 +14,6 @@ import { ClerkProvider } from '@clerk/clerk-react'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
-
-export const defaultTestUser = {
-  id: 'clxm4hnxg0000127n543sm1js',
-  email: 'alice@prisma.io',
-  name: 'Alice',
-  avatar_url: 'link.com'
-}
-
 const router = createBrowserRouter([
   {
     path: "/",
