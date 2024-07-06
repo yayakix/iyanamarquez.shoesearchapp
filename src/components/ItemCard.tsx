@@ -10,6 +10,8 @@ interface ItemProps {
     image: string
 }
 
+const URL = import.meta.env.VITE_REACT_APP_API_URL;
+
 export function ItemCard({ name, description, price, image }: ItemProps) {
     const { id } = useParams()
     const shoeId = id
@@ -25,7 +27,7 @@ export function ItemCard({ name, description, price, image }: ItemProps) {
             const data = {
                 shoeId: shoeId
             }
-            fetch(`http://localhost:4000/favorite/user/shoe`, {
+            fetch(`${URL}/favorite/user/shoe`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -46,7 +48,7 @@ export function ItemCard({ name, description, price, image }: ItemProps) {
             const data = {
                 shoeId: shoeId
             }
-            fetch(`http://localhost:4000/remove/favorite/user/shoe`, {
+            fetch(`${URL}/remove/favorite/user/shoe`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -58,7 +60,7 @@ export function ItemCard({ name, description, price, image }: ItemProps) {
     }
 
     const deleteShoe = () => {
-        fetch(`http://localhost:4000/delete/shoe/${shoeId}`, {
+        fetch(`${URL}/delete/shoe/${shoeId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -67,7 +69,7 @@ export function ItemCard({ name, description, price, image }: ItemProps) {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:4000/tags/${id}`, {
+        fetch(`${URL}/tags/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
