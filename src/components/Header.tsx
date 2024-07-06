@@ -1,6 +1,9 @@
 import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/clerk-react"
 import { Link } from "react-router-dom"
+import { useState } from "react";
+
 function Header() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const list = [{
         title: 'Home',
         link: '/'
@@ -36,8 +39,9 @@ function Header() {
                                 data-twe-collapse-init
                                 data-twe-target="#navbarSupportedContentX"
                                 aria-controls="navbarSupportedContentX"
-                                aria-expanded="false"
-                                aria-label="Toggle navigation">
+                                aria-expanded={isMenuOpen}
+                                aria-label="Toggle navigation"
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}>
                                 <span
                                     className="[&>svg]:h-7 [&>svg]:w-7 [&>svg]:stroke-black/50 ">
                                     <svg
@@ -57,7 +61,7 @@ function Header() {
                         </div>
 
                         <div
-                            className="!visible hidden grow basis-[100%] items-center text-center lg:!flex lg:basis-auto lg:text-left"
+                            className={`!visible ${isMenuOpen ? 'block' : 'hidden'} grow basis-[100%] items-center text-center lg:!flex lg:basis-auto lg:text-left`}
                             id="navbarSupportedContentX"
                             data-twe-collapse-item>
                             <ul
