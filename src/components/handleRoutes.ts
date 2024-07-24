@@ -5,7 +5,7 @@ function useHandleRoutes() {
   const navigate = useNavigate();
   const { getToken } = useAuth();
 
-  const handleRoutes = async (method: string, route: string, body: any) => {
+  const handleRoutes = async (method: string, route: string) => {
     const URL = import.meta.env.VITE_REACT_APP_API_URL;
     if (method === "POST") {
       console.log("post");
